@@ -1,1 +1,57 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YT Downloader by NK</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;padding:25px 15px;background:#111a30}
+h1{color:#45d9ff;font-size:27px}
+main{max-width:600px;margin:45px auto;padding:18px}
+.card{background:#17223a;padding:24px;border-radius:18px;text-align:center}
+input{width:100%;padding:15px;border-radius:10px;border:1px solid #52617c;background:#0b1020;color:white;margin:15px 0}
+button{width:100%;padding:14px;background:#45d9ff;color:#07111f;border:0;border-radius:10px;font-size:16px;font-weight:bold}
+p{line-height:1.6;color:#c5d0e2}
+img{width:100%;border-radius:10px;margin-top:20px}
+</style>
+</head>
+<body>
+<header>
+<h1>YT Downloader by NK</h1>
+<p>Your YouTube Link Utility</p>
+</header>
+<main>
+<div class="card">
+<h2>Video Preview</h2>
+<p>Paste your YouTube video link below</p>
+<input id="url" placeholder="Paste YouTube URL here">
+<button onclick="previewVideo()">Preview Video</button>
+<div id="result"></div>
+</div>
+<p style="text-align:center">Use authorized downloads only.</p>
+</main>
+<script>
+function previewVideo(){
+let url=document.getElementById('url').value.trim();
+let id='';
+try{
+let u=new URL(url);
+if(u.hostname==='youtu.be')id=u.pathname.slice(1);
+else if(['youtube.com','www.youtube.com','m.youtube.com'].includes(u.hostname)){
+if(u.pathname==='/watch')id=u.searchParams.get('v')||'';
+else if(u.pathname.startsWith('/shorts/')||u.pathname.startsWith('/embed/'))id=u.pathname.split('/')[2]||'';
+}
+}catch(e){}
+if(!/^[\w-]{11}$/.test(id)){
+document.getElementById('result').innerHTML='<p>Please enter a valid YouTube link.</p>';
+return;
+}
+document.getElementById('result').innerHTML=
+'<img src="https://img.youtube.com/vi/'+id+'/hqdefault.jpg" alt="Video thumbnail"><p>Video link detected!</p><button onclick="window.open(\'https://www.youtube.com/watch?v='+id+'\',\'_blank\')">Open on YouTube</button>';
+}
+</script>
+</body>
+</html>
